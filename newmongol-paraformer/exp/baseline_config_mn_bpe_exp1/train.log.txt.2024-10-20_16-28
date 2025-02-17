@@ -1,0 +1,244 @@
+Notice: ffmpeg is not installed. torchaudio is used to load audio
+If you want to use ffmpeg backend to load audio, please install it by:
+	sudo apt install ffmpeg # ubuntu
+	# brew install ffmpeg # mac
+
+tables: 
+
+-----------    ** dataset_classes **    --------------
+| register name            | class name               | class location                                       |
+| AudioDataset             | AudioDataset             | funasr/datasets/audio_datasets/datasets.py:9         |
+| AudioDatasetHotword      | AudioDatasetHotword      | funasr/datasets/audio_datasets/datasets.py:121       |
+| AudioLLMARDataset        | AudioLLMARDataset        | funasr/datasets/llm_datasets/datasets.py:302         |
+| AudioLLMDataset          | AudioLLMDataset          | funasr/datasets/llm_datasets/datasets.py:167         |
+| AudioLLMNARDataset       | AudioLLMNARDataset       | funasr/datasets/llm_datasets/datasets.py:8           |
+| AudioLLMQwenAudioDataset | AudioLLMQwenAudioDataset | funasr/datasets/llm_datasets_qwenaudio/datasets.py:8 |
+| AudioLLMVicunaDataset    | AudioLLMVicunaDataset    | funasr/datasets/llm_datasets_vicuna/datasets.py:8    |
+| KwsMTDataset             | KwsMTDataset             | funasr/datasets/kws_datasets/datasets.py:9           |
+| OpenAIDataset            | OpenAIDataset            | funasr/datasets/openai_datasets/datasets.py:10       |
+| OpenAIDatasetMultiTurn   | OpenAIDatasetMultiTurn   | funasr/datasets/openai_datasets/datasets.py:232      |
+| SenseVoiceCTCDataset     | SenseVoiceCTCDataset     | funasr/datasets/sense_voice_datasets/datasets.py:234 |
+| SenseVoiceDataset        | SenseVoiceDataset        | funasr/datasets/sense_voice_datasets/datasets.py:11  |
+-----------    ** batch_sampler_classes **    --------------
+| register name                           | class name                       | class location                                       |
+| BatchSampler                            | CustomDistributedBatchSampler_fn | funasr/datasets/audio_datasets/samplers.py:14        |
+| CustomDistributedBatchSampler           | CustomDistributedBatchSampler_fn | funasr/datasets/audio_datasets/samplers.py:14        |
+| CustomDistributedDynamicBatchSampler    | CustomDistributedBatchSampler_fn | funasr/datasets/audio_datasets/samplers.py:14        |
+| DynamicBatchLocalShuffleSampler         | CustomDistributedBatchSampler_fn | funasr/datasets/audio_datasets/samplers.py:14        |
+| EspnetStyleBatchSampler                 | EspnetStyleBatchSampler_fn       | funasr/datasets/audio_datasets/espnet_samplers.py:13 |
+| RankFullLocalShuffleBatchSampler        | CustomDistributedBatchSampler_fn | funasr/datasets/audio_datasets/samplers.py:14        |
+| RankFullLocalShuffleDynamicBatchSampler | CustomDistributedBatchSampler_fn | funasr/datasets/audio_datasets/samplers.py:14        |
+-----------    ** index_ds_classes **    --------------
+| register name         | class name           | class location                                 |
+| IndexDSJsonl          | IndexDSJsonlRankFull | funasr/datasets/audio_datasets/index_ds.py:13  |
+| IndexDSJsonlRankFull  | IndexDSJsonlRankFull | funasr/datasets/audio_datasets/index_ds.py:13  |
+| IndexDSJsonlRankSplit | IndexDSJsonlRankFull | funasr/datasets/audio_datasets/index_ds.py:13  |
+| OpenAIIndexDSJsonl    | OpenAIIndexDSJsonl   | funasr/datasets/openai_datasets/index_ds.py:13 |
+-----------    ** preprocessor_classes **    --------------
+| register name                   | class name                      | class location                                    |
+| SpeechPreprocessSpeedPerturb    | SpeechPreprocessSpeedPerturb    | funasr/datasets/audio_datasets/preprocessor.py:18 |
+| TextPreprocessRemovePunctuation | TextPreprocessRemovePunctuation | funasr/datasets/llm_datasets/preprocessor.py:19   |
+| TextPreprocessSegDict           | TextPreprocessSegDict           | funasr/datasets/audio_datasets/preprocessor.py:39 |
+-----------    ** dataloader_classes **    --------------
+| register name      | class name         | class location                          |
+| DataloaderIterable | DataloaderIterable | funasr/datasets/dataloader_entry.py:120 |
+| DataloaderMapStyle | DataloaderMapStyle | funasr/datasets/dataloader_entry.py:47  |
+-----------    ** frontend_classes **    --------------
+| register name     | class name        | class location                          |
+| DefaultFrontend   | DefaultFrontend   | funasr/frontends/default.py:22          |
+| WavFrontend       | WavFrontend       | funasr/frontends/wav_frontend.py:78     |
+| WavFrontendOnline | WavFrontendOnline | funasr/frontends/wav_frontend.py:212    |
+| WhisperFrontend   | WhisperFrontend   | funasr/frontends/whisper_frontend.py:10 |
+| wav_frontend      | WavFrontend       | funasr/frontends/wav_frontend.py:78     |
+-----------    ** joint_network_classes **    --------------
+| register name | class name   | class location                               |
+| joint_network | JointNetwork | funasr/models/transducer/joint_network.py:12 |
+-----------    ** model_classes **    --------------
+| register name          | class name             | class location                                     |
+| BAT                    | BAT                    | funasr/models/bat/model.py:35                      |
+| BiCifParaformer        | BiCifParaformer        | funasr/models/bicif_paraformer/model.py:37         |
+| Branchformer           | Branchformer           | funasr/models/branchformer/model.py:7              |
+| CAMPPlus               | CAMPPlus               | funasr/models/campplus/model.py:37                 |
+| CTC                    | Transformer            | funasr/models/ctc/model.py:17                      |
+| CTTransformer          | CTTransformer          | funasr/models/ct_transformer/model.py:34           |
+| CTTransformerStreaming | CTTransformerStreaming | funasr/models/ct_transformer_streaming/model.py:27 |
+| Conformer              | Conformer              | funasr/models/conformer_rwkv/model.py:9            |
+| ContextualParaformer   | ContextualParaformer   | funasr/models/contextual_paraformer/model.py:40    |
+| EBranchformer          | EBranchformer          | funasr/models/e_branchformer/model.py:7            |
+| Emotion2vec            | Emotion2vec            | funasr/models/emotion2vec/model.py:34              |
+| FsmnKWS                | FsmnKWS                | funasr/models/fsmn_kws/model.py:26                 |
+| FsmnKWSConvert         | FsmnKWSConvert         | funasr/models/fsmn_kws/model.py:240                |
+| FsmnKWSMT              | FsmnKWSMT              | funasr/models/fsmn_kws_mt/model.py:26              |
+| FsmnKWSMTConvert       | FsmnKWSMTConvert       | funasr/models/fsmn_kws_mt/model.py:302             |
+| FsmnVADStreaming       | FsmnVADStreaming       | funasr/models/fsmn_vad_streaming/model.py:279      |
+| LCBNet                 | LCBNet                 | funasr/models/lcbnet/model.py:27                   |
+| LLMASR                 | LLMASR                 | funasr/models/llm_asr/model.py:27                  |
+| LLMASR2                | LLMASR2                | funasr/models/llm_asr/model.py:348                 |
+| LLMASR3                | LLMASR3                | funasr/models/llm_asr/model.py:829                 |
+| LLMASR4                | LLMASR4                | funasr/models/llm_asr/model.py:847                 |
+| LLMASRNAR              | LLMASRNAR              | funasr/models/llm_asr_nar/model.py:25              |
+| LLMASRNARPrompt        | LLMASRNARPrompt        | funasr/models/llm_asr_nar/model.py:370             |
+| MonotonicAligner       | MonotonicAligner       | funasr/models/monotonic_aligner/model.py:24        |
+| OpenAIWhisperLIDModel  | OpenAIWhisperLIDModel  | funasr/models/whisper_lid/model.py:457             |
+| OpenAIWhisperModel     | OpenAIWhisperModel     | funasr/models/whisper_lid/model.py:21              |
+| Paraformer             | Paraformer             | funasr/models/paraformer/model.py:29               |
+| ParaformerStreaming    | ParaformerStreaming    | funasr/models/paraformer_streaming/model.py:37     |
+| SANM                   | SANM                   | funasr/models/sanm/model.py:14                     |
+| SCAMA                  | SCAMA                  | funasr/models/scama/model.py:39                    |
+| SanmKWS                | SanmKWS                | funasr/models/sanm_kws/model.py:27                 |
+| SanmKWSStreaming       | SanmKWSStreaming       | funasr/models/sanm_kws_streaming/model.py:37       |
+| SeacoParaformer        | SeacoParaformer        | funasr/models/seaco_paraformer/model.py:43         |
+| SenseVoiceSmall        | SenseVoiceSmall        | funasr/models/sense_voice/model.py:586             |
+| Transducer             | Transducer             | funasr/models/transducer/model.py:34               |
+| Transformer            | Transformer            | funasr/models/transformer/model.py:22              |
+| UniASR                 | UniASR                 | funasr/models/uniasr/model.py:26                   |
+-----------    ** predictor_classes **    --------------
+| register name        | class name           | class location                                      |
+| CifPredictor         | CifPredictor         | funasr/models/paraformer/cif_predictor.py:16        |
+| CifPredictorV2       | CifPredictorV2       | funasr/models/paraformer/cif_predictor.py:172       |
+| CifPredictorV2Export | CifPredictorV2Export | funasr/models/paraformer/cif_predictor.py:430       |
+| CifPredictorV3       | CifPredictorV3       | funasr/models/bicif_paraformer/cif_predictor.py:96  |
+| CifPredictorV3Export | CifPredictorV3Export | funasr/models/bicif_paraformer/cif_predictor.py:374 |
+-----------    ** encoder_classes **    --------------
+| register name             | class name             | class location                                        |
+| BranchformerEncoder       | BranchformerEncoder    | funasr/models/branchformer/encoder.py:278             |
+| ChunkConformerEncoder     | ConformerChunkEncoder  | funasr/models/conformer/encoder.py:884                |
+| ConformerEncoder          | ConformerEncoder       | funasr/models/conformer/encoder.py:286                |
+| ConvBiasPredictor         | ConvPredictor          | funasr/models/lcbnet/encoder.py:357                   |
+| EBranchformerEncoder      | EBranchformerEncoder   | funasr/models/e_branchformer/encoder.py:179           |
+| FSMN                      | FSMN                   | funasr/models/fsmn_vad_streaming/encoder.py:199       |
+| FSMNConvert               | FSMNConvert            | funasr/models/fsmn_kws/encoder.py:422                 |
+| FSMNExport                | FSMNExport             | funasr/models/fsmn_vad_streaming/encoder.py:274       |
+| FSMNMT                    | FSMNMT                 | funasr/models/fsmn_kws_mt/encoder.py:27               |
+| FSMNMTConvert             | FSMNMTConvert          | funasr/models/fsmn_kws_mt/encoder.py:106              |
+| FusionSANEncoder          | SelfSrcAttention       | funasr/models/lcbnet/encoder.py:228                   |
+| QwenAudioEncoder          | QwenAudioEncoder       | funasr/models/qwen_audio/audio.py:333                 |
+| RWKVEncoder               | RWKVEncoder            | funasr/models/rwkv_bat/rwkv_encoder.py:16             |
+| SANMEncoder               | SANMEncoder            | funasr/models/sanm/encoder.py:187                     |
+| SANMEncoderChunkOpt       | SANMEncoderChunkOpt    | funasr/models/scama/encoder.py:187                    |
+| SANMEncoderChunkOptExport | SANMEncoderExport      | funasr/models/sanm/encoder.py:516                     |
+| SANMEncoderExport         | SANMEncoderExport      | funasr/models/sanm/encoder.py:516                     |
+| SANMVadEncoder            | SANMVadEncoder         | funasr/models/ct_transformer_streaming/encoder.py:174 |
+| SANMVadEncoderExport      | SANMVadEncoderExport   | funasr/models/ct_transformer_streaming/encoder.py:436 |
+| SenseVoiceEncoderSmall    | SenseVoiceEncoderSmall | funasr/models/sense_voice/model.py:443                |
+| TransformerEncoder        | TransformerEncoder     | funasr/models/transformer/encoder.py:139              |
+| TransformerTextEncoder    | TransformerTextEncoder | funasr/models/lcbnet/encoder.py:130                   |
+-----------    ** decoder_classes **    --------------
+| register name                              | class name                                 | class location                                     |
+| ContextualParaformerDecoder                | ContextualParaformerDecoder                | funasr/models/contextual_paraformer/decoder.py:114 |
+| ContextualParaformerDecoderExport          | ContextualParaformerDecoderExport          | funasr/models/contextual_paraformer/decoder.py:315 |
+| DynamicConvolution2DTransformerDecoder     | DynamicConvolution2DTransformerDecoder     | funasr/models/sa_asr/transformer_decoder.py:674    |
+| DynamicConvolutionTransformerDecoder       | DynamicConvolutionTransformerDecoder       | funasr/models/sa_asr/transformer_decoder.py:614    |
+| FsmnDecoder                                | FsmnDecoder                                | funasr/models/sanm/decoder.py:203                  |
+| FsmnDecoderSCAMAOpt                        | FsmnDecoderSCAMAOpt                        | funasr/models/scama/decoder.py:203                 |
+| LightweightConvolution2DTransformerDecoder | LightweightConvolution2DTransformerDecoder | funasr/models/sa_asr/transformer_decoder.py:554    |
+| LightweightConvolutionTransformerDecoder   | LightweightConvolutionTransformerDecoder   | funasr/models/sa_asr/transformer_decoder.py:494    |
+| ParaformerDecoderSAN                       | ParaformerDecoderSAN                       | funasr/models/sa_asr/transformer_decoder.py:388    |
+| ParaformerDecoderSANExport                 | ParaformerDecoderSANExport                 | funasr/models/paraformer/decoder.py:1087           |
+| ParaformerSANDecoder                       | ParaformerSANDecoder                       | funasr/models/paraformer/decoder.py:981            |
+| ParaformerSANMDecoder                      | ParaformerSANMDecoder                      | funasr/models/paraformer/decoder.py:224            |
+| ParaformerSANMDecoderExport                | ParaformerSANMDecoderExport                | funasr/models/paraformer/decoder.py:640            |
+| ParaformerSANMDecoderOnlineExport          | ParaformerSANMDecoderOnlineExport          | funasr/models/paraformer/decoder.py:829            |
+| TransformerDecoder                         | TransformerDecoder                         | funasr/models/sa_asr/transformer_decoder.py:343    |
+| TransformerRWKVDecoder                     | TransformerRWKVDecoder                     | funasr/models/conformer_rwkv/decoder.py:378        |
+| rnn_decoder                                | RNNDecoder                                 | funasr/models/transducer/rnn_decoder.py:85         |
+| rnnt_decoder                               | RNNTDecoder                                | funasr/models/transducer/rnnt_decoder.py:14        |
+-----------    ** adaptor_classes **    --------------
+| register name | class name              | class location                         |
+| Linear        | Linear                  | funasr/models/llm_asr_nar/adaptor.py:7 |
+| QFormer       | EncoderProjectorQFormer | funasr/models/llm_asr/adaptor.py:35    |
+| Transformer   | Transformer             | funasr/models/llm_asr/adaptor.py:92    |
+-----------    ** normalize_classes **    --------------
+| register name | class name   | class location                             |
+| GlobalMVN     | GlobalMVN    | funasr/models/normalize/global_mvn.py:12   |
+| UtteranceMVN  | UtteranceMVN | funasr/models/normalize/utterance_mvn.py:9 |
+-----------    ** specaug_classes **    --------------
+| register name | class name | class location                       |
+| SpecAug       | SpecAug    | funasr/models/specaug/specaug.py:16  |
+| SpecAugLFR    | SpecAugLFR | funasr/models/specaug/specaug.py:105 |
+-----------    ** lid_predictor_classes **    --------------
+| register name | class name   | class location                               |
+| LidPredictor  | LidPredictor | funasr/models/whisper_lid/lid_predictor.py:9 |
+-----------    ** tokenizer_classes **    --------------
+| register name           | class name              | class location                                 |
+| CharTokenizer           | CharTokenizer           | funasr/tokenizer/char_tokenizer.py:12          |
+| HuggingfaceTokenizer    | HuggingfaceTokenizer    | funasr/tokenizer/hf_tokenizer.py:4             |
+| SenseVoiceTokenizer     | SenseVoiceTokenizer     | funasr/tokenizer/whisper_tokenizer.py:25       |
+| SentencepiecesTokenizer | SentencepiecesTokenizer | funasr/tokenizer/sentencepiece_tokenizer.py:12 |
+| WhisperTokenizer        | WhisperTokenizer        | funasr/tokenizer/whisper_tokenizer.py:4        |
+
+
+[2024-10-20 16:28:13,445][root][INFO] - Build model, frontend, tokenizer
+funasr version: 1.1.9.
+Check update of funasr, and it would cost few times. You may disable it by set `disable_update=True` in AutoModel
+New version is available: 1.1.12.
+Please use the command "pip install -U funasr" to upgrade.
+Error executing job with overrides: ['++train_data_set_list=data/train/audio_datasets.jsonl', '++valid_data_set_list=data/test/audio_datasets.jsonl', '++tokenizer_conf.token_list=data/mn_token_list/bpe/tokens.txt', '++frontend_conf.cmvn_file=data/train/am.mvn', '++output_dir=/data/yunlong/FunASR/newmongol-paraformer/exp/baseline_config_mn_bpe_exp1']
+Traceback (most recent call last):
+  File "/data/yunlong/FunASR/newmongol-paraformer/../funasr/bin/train.py", line 262, in <module>
+    main_hydra()
+  File "/opt/anaconda3/envs/funasr-yl/lib/python3.9/site-packages/hydra/main.py", line 94, in decorated_main
+    _run_hydra(
+  File "/opt/anaconda3/envs/funasr-yl/lib/python3.9/site-packages/hydra/_internal/utils.py", line 394, in _run_hydra
+    _run_app(
+  File "/opt/anaconda3/envs/funasr-yl/lib/python3.9/site-packages/hydra/_internal/utils.py", line 457, in _run_app
+    run_and_report(
+  File "/opt/anaconda3/envs/funasr-yl/lib/python3.9/site-packages/hydra/_internal/utils.py", line 223, in run_and_report
+    raise ex
+  File "/opt/anaconda3/envs/funasr-yl/lib/python3.9/site-packages/hydra/_internal/utils.py", line 220, in run_and_report
+    return func()
+  File "/opt/anaconda3/envs/funasr-yl/lib/python3.9/site-packages/hydra/_internal/utils.py", line 458, in <lambda>
+    lambda: hydra.run(
+  File "/opt/anaconda3/envs/funasr-yl/lib/python3.9/site-packages/hydra/_internal/hydra.py", line 132, in run
+    _ = ret.return_value
+  File "/opt/anaconda3/envs/funasr-yl/lib/python3.9/site-packages/hydra/core/utils.py", line 260, in return_value
+    raise self._return_value
+  File "/opt/anaconda3/envs/funasr-yl/lib/python3.9/site-packages/hydra/core/utils.py", line 186, in run_job
+    ret.return_value = task_function(task_cfg)
+  File "/data/yunlong/FunASR/newmongol-paraformer/../funasr/bin/train.py", line 52, in main_hydra
+    main(**kwargs)
+  File "/data/yunlong/FunASR/newmongol-paraformer/../funasr/bin/train.py", line 79, in main
+    model = AutoModel(**kwargs)
+  File "/data/yunlong/FunASR/funasr/auto/auto_model.py", line 125, in __init__
+    model, kwargs = self.build_model(**kwargs)
+  File "/data/yunlong/FunASR/funasr/auto/auto_model.py", line 222, in build_model
+    tokenizer = tokenizer_class(**tokenizer_conf)
+  File "/data/yunlong/FunASR/funasr/tokenizer/char_tokenizer.py", line 23, in __init__
+    super().__init__(**kwargs)
+  File "/data/yunlong/FunASR/funasr/tokenizer/abs_tokenizer.py", line 33, in __init__
+    with token_list.open("r", encoding="utf-8") as f:
+  File "/opt/anaconda3/envs/funasr-yl/lib/python3.9/pathlib.py", line 1252, in open
+    return io.open(self, mode, buffering, encoding, errors, newline,
+  File "/opt/anaconda3/envs/funasr-yl/lib/python3.9/pathlib.py", line 1120, in _opener
+    return self._accessor.open(self, flags, mode)
+FileNotFoundError: [Errno 2] No such file or directory: 'data/mn_token_list/bpe/tokens.txt'
+E1020 16:28:14.400504 140468191994944 torch/distributed/elastic/multiprocessing/api.py:833] failed (exitcode: 1) local_rank: 0 (pid: 635837) of binary: /opt/anaconda3/envs/funasr-yl/bin/python3.9
+Traceback (most recent call last):
+  File "/opt/anaconda3/envs/funasr-yl/bin/torchrun", line 8, in <module>
+    sys.exit(main())
+  File "/opt/anaconda3/envs/funasr-yl/lib/python3.9/site-packages/torch/distributed/elastic/multiprocessing/errors/__init__.py", line 348, in wrapper
+    return f(*args, **kwargs)
+  File "/opt/anaconda3/envs/funasr-yl/lib/python3.9/site-packages/torch/distributed/run.py", line 901, in main
+    run(args)
+  File "/opt/anaconda3/envs/funasr-yl/lib/python3.9/site-packages/torch/distributed/run.py", line 892, in run
+    elastic_launch(
+  File "/opt/anaconda3/envs/funasr-yl/lib/python3.9/site-packages/torch/distributed/launcher/api.py", line 133, in __call__
+    return launch_agent(self._config, self._entrypoint, list(args))
+  File "/opt/anaconda3/envs/funasr-yl/lib/python3.9/site-packages/torch/distributed/launcher/api.py", line 264, in launch_agent
+    raise ChildFailedError(
+torch.distributed.elastic.multiprocessing.errors.ChildFailedError: 
+============================================================
+../funasr/bin/train.py FAILED
+------------------------------------------------------------
+Failures:
+  <NO_OTHER_FAILURES>
+------------------------------------------------------------
+Root Cause (first observed failure):
+[0]:
+  time      : 2024-10-20_16:28:14
+  host      : imudges2023
+  rank      : 0 (local_rank: 0)
+  exitcode  : 1 (pid: 635837)
+  error_file: <N/A>
+  traceback : To enable traceback see: https://pytorch.org/docs/stable/elastic/errors.html
+============================================================

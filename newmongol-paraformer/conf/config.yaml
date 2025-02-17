@@ -1,0 +1,149 @@
+# This is an example that demonstrates how to configure a model file.
+# You can modify the configuration according to your own requirements.
+
+# to print the register_table:
+# from funasr.register import tables
+# tables.print()
+
+# 网络架构配置
+model: ParaformerStreaming  # 模型类型，这里使用的是 ParaformerStreaming
+model_conf:
+    ctc_weight: 0.0  # CTC 损失的权重，0 表示不使用 CTC 损失
+    lsm_weight: 0.1  # Label Smoothing 的权重
+    length_normalized_loss: true  # 是否使用长度归一化损失
+    predictor_weight: 1.0  # 预测器的权重
+    predictor_bias: 1  # 预测器的偏置
+    sampling_ratio: 0.75  # 采样比例
+
+# 编码器配置
+encoder: SANMEncoderChunkOpt  # 编码器类型，这里使用的是 SANMEncoderChunkOpt
+encoder_conf:
+    output_size: 512  # 编码器输出的特征维度
+    attention_heads: 4  # 注意力头的数量
+    linear_units: 2048  # 线性层的单元数
+    num_blocks: 50  # 编码器中堆叠的块数
+    dropout_rate: 0.1  # dropout 概率
+    positional_dropout_rate: 0.1  # 位置编码的 dropout 概率
+    attention_dropout_rate: 0.1  # 注意力机制的 dropout 概率
+    input_layer: pe_online  # 输入层类型，这里使用在线位置编码
+    pos_enc_class: SinusoidalPositionEncoder  # 位置编码类
+    normalize_before: true  # 是否在每个层之前进行归一化
+    kernel_size: 11  # 卷积核的大小
+    sanm_shfit: 0  # SANM 模型的位移参数
+    selfattention_layer_type: sanm  # 自注意力层的类型
+    chunk_size:  # 分块大小
+    - 12  # 第一层的块大小
+    - 15  # 第二层的块大小
+    stride:  # 步幅设置
+    - 8  # 第一层的步幅
+    - 10  # 第二层的步幅
+    pad_left:  # 左侧填充
+    - 0  # 第一层的左侧填充
+    - 0  # 第二层的左侧填充
+    encoder_att_look_back_factor:  # 编码器注意力回看因子
+    - 4  # 第一层的回看因子
+    - 4  # 第二层的回看因子
+    decoder_att_look_back_factor:  # 解码器注意力回看因子
+    - 1  # 第一层的回看因子
+    - 1  # 第二层的回看因子
+
+# 解码器配置
+decoder: ParaformerSANMDecoder  # 解码器类型，这里使用的是 ParaformerSANMDecoder
+decoder_conf:
+    attention_heads: 4  # 注意力头的数量
+    linear_units: 2048  # 线性层的单元数
+    num_blocks: 16  # 解码器中堆叠的块数
+    dropout_rate: 0.1  # dropout 概率
+    positional_dropout_rate: 0.1  # 位置编码的 dropout 概率
+    self_attention_dropout_rate: 0.1  # 自注意力的 dropout 概率
+    src_attention_dropout_rate: 0.1  # 源注意力的 dropout 概率
+    att_layer_num: 16  # 注意力层的数量
+    kernel_size: 11  # 卷积核的大小
+    sanm_shfit: 5  # SANM 模型的位移参数
+
+# 预测器配置
+predictor: CifPredictorV2  # 预测器类型，这里使用的是 CifPredictorV2
+predictor_conf:
+    idim: 512  # 输入维度
+    threshold: 1.0  # 阈值
+    l_order: 1  # 左边的顺序
+    r_order: 1  # 右边的顺序
+    tail_threshold: 0.45  # 尾部阈值
+
+# 前端处理配置
+frontend: WavFrontendOnline  # 前端处理模块，这里使用的是在线的 WavFrontend
+frontend_conf:
+    fs: 16000  # 采样频率
+    window: hamming  # 窗口函数类型
+    n_mels: 80  # Mel 频率的数量
+    frame_length: 25  # 帧长度（毫秒）
+    frame_shift: 10  # 帧移（毫秒）
+    lfr_m: 7  # LFR (Long-Frame Reduction) 的参数
+    lfr_n: 6  # LFR 的参数
+
+# 频谱增强配置
+specaug: SpecAugLFR  # 频谱增强类型，这里使用的是 SpecAugLFR
+specaug_conf:
+    apply_time_warp: false  # 是否应用时间扭曲
+    time_warp_window: 5  # 时间扭曲窗口大小
+    time_warp_mode: bicubic  # 时间扭曲模式
+    apply_freq_mask: true  # 是否应用频率掩码
+    freq_mask_width_range:  # 频率掩码的宽度范围
+    - 0  # 最小值
+    - 30  # 最大值
+    lfr_rate: 6  # LFR 的比率
+    num_freq_mask: 1  # 应用的频率掩码数量
+    apply_time_mask: true  # 是否应用时间掩码
+    time_mask_width_range:  # 时间掩码的宽度范围
+    - 0  # 最小值
+    - 12  # 最大值
+    num_time_mask: 1  # 应用的时间掩码数量
+
+# 训练配置
+train_conf:
+  accum_grad: 1  # 梯度累积步数
+  grad_clip: 5  # 梯度裁剪阈值
+  max_epoch: 150  # 最大训练周期
+  val_scheduler_criterion:  # 验证调度的标准
+      - valid  # 验证集的标准
+      - acc  # 准确率
+  best_model_criterion:  # 最佳模型的标准
+  -   - valid  # 验证集
+      - acc  # 准确率
+      - max  # 最大值
+  keep_nbest_models: 10  # 保留的最佳模型数量
+  log_interval: 50  # 日志记录间隔
+
+# 优化器配置
+optim: adam  # 优化器类型，这里使用的是 Adam
+optim_conf:
+   lr: 0.0005  # 学习率
+scheduler: warmuplr  # 学习率调度器类型
+scheduler_conf:
+   warmup_steps: 30000  # 预热步骤数
+
+# 数据集配置
+dataset: AudioDataset  # 数据集类型，这里使用的是音频数据集
+dataset_conf:
+    index_ds: IndexDSJsonl  # 数据集索引文件类型
+    batch_sampler: DynamicBatchLocalShuffleSampler  # 批采样器类型
+    batch_type: example  # 批处理类型，example 或 length
+    batch_size: 1  # 批大小（样本数量）
+    max_token_length: 2048  # 最大标记长度，超出则过滤
+    buffer_size: 500  # 缓冲区大小
+    shuffle: True  # 是否打乱数据
+    num_workers: 0  # 使用的工作线程数
+
+# 分词器配置
+tokenizer: SentencepiecesTokenizer  # 分词器类型，这里使用的是字符分词器
+tokenizer_conf:
+  unk_symbol: <unk>  # 未知符号
+  split_with_space: true  # 是否根据空格分割
+
+# CTC 配置
+ctc_conf:
+    dropout_rate: 0.0  # CTC 的 dropout 概率
+    ctc_type: builtin  # CTC 类型，这里使用内置 CTC
+    reduce: true  # 是否减少 CTC 的输出
+    ignore_nan_grad: true  # 是否忽略 NaN 的梯度
+normalize: null  # 是否归一化，这里未设置
